@@ -24,7 +24,7 @@ face_net = cv2.dnn.readNetFromCaffe(prototxt_path, weights_path)
 class MaskDetectionApp(QWidget):
     def __init__(self, camera_index=1):
         super().__init__()
-        self.setWindowTitle("Maske Tespiti ve Kullanıcı Girişi (FaceNet)")
+        self.setWindowTitle("Face Mask Detection")
         self.setGeometry(100, 100, 800, 600)
 
         self.camera_index = camera_index
@@ -35,13 +35,13 @@ class MaskDetectionApp(QWidget):
 
         self.name_input = QLineEdit(self)
         self.name_input.setAlignment(Qt.AlignCenter)
-        self.name_input.setPlaceholderText("Kullanıcı adı girin")
+        self.name_input.setPlaceholderText("Enter Username")
 
-        self.register_button = QPushButton("Kayıt Ol")
-        self.login_button = QPushButton("Giriş Yap")
-        self.start_register_button = QPushButton("Kaydı Başlat")
-        self.logout_button = QPushButton("Çıkış Yap")
-        self.back_to_menu_button = QPushButton("Ana Menüye Dön")
+        self.register_button = QPushButton("sign up")
+        self.login_button = QPushButton("sign in")
+        self.start_register_button = QPushButton("Start Recording")
+        self.logout_button = QPushButton("logout")
+        self.back_to_menu_button = QPushButton("Back to Main Menu")
 
         self.register_button.clicked.connect(self.start_camera_and_register)
         self.login_button.clicked.connect(self.start_camera_and_login)
@@ -80,7 +80,7 @@ class MaskDetectionApp(QWidget):
     def reset_to_main_menu(self):
         self.clear_interface()
         self.register_button.show()
-        self.login_button.setText("Giriş Yap")
+        self.login_button.setText("Sign in")
         self.login_button.clicked.disconnect()
         self.login_button.clicked.connect(self.start_camera_and_login)
         self.login_button.show()
@@ -114,7 +114,7 @@ class MaskDetectionApp(QWidget):
         self.init_camera()
         self.clear_interface()
         self.name_input.hide()
-        self.login_button.setText("Giriş Yap")
+        self.login_button.setText("Sign in")
         self.login_button.show()
         self.login_button.clicked.disconnect()
         self.login_button.clicked.connect(self.login_user)
@@ -337,6 +337,51 @@ class MaskDetectionApp(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
+    # Modern font ve genel stil ayarları
+    app.setStyleSheet('''
+        QWidget {
+            background-color: #f4f6fb;
+            font-family: 'Segoe UI', 'Roboto', 'Arial', 'Helvetica Neue', sans-serif;
+            font-size: 16px;
+            color: #222;
+        }
+        QLabel {
+            font-size: 18px;
+            color: #222;
+        }
+        QLineEdit {
+            border: 1.5px solid #bfc7d5;
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 16px;
+            background: #fff;
+            color: #222;
+        }
+        QPushButton {
+            background-color: #4f8cff;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 0;
+            font-size: 17px;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(79,140,255,0.08);
+            transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+        }
+        QPushButton:hover {
+            background-color: #2563eb;
+            box-shadow: 0 4px 16px rgba(37,99,235,0.15);
+            transform: translateY(-2px) scale(1.03);
+        }
+        QPushButton:pressed {
+            background-color: #174ea6;
+            box-shadow: 0 1px 4px rgba(23,78,166,0.12);
+            transform: scale(0.98);
+        }
+        QMessageBox QLabel {
+            font-size: 16px;
+        }
+    ''')
     window = MaskDetectionApp(camera_index=1)
     window.show()
     sys.exit(app.exec_())
