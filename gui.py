@@ -95,7 +95,7 @@ class MaskDetectionApp(QWidget):
     def init_camera(self):
         if self.capture is None:
             self.capture = cv2.VideoCapture(0)
-            self.timer.start(1000)
+            self.timer.start(30)
 
     def release_camera(self):
         if self.capture is not None:
@@ -107,8 +107,7 @@ class MaskDetectionApp(QWidget):
     def start_camera_and_login(self):
         self.init_camera()
         self.clear_interface()
-        self.name_input.show()
-        self.name_input.setFocus()
+        self.name_input.hide()
         self.login_button.setText("Giriş Yap")
         self.login_button.show()
         self.login_button.clicked.disconnect()
@@ -244,7 +243,7 @@ class MaskDetectionApp(QWidget):
         rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         current_time = cv2.getTickCount() / cv2.getTickFrequency()
 
-        run_check = current_time - self.last_check_time >= 1.0
+        run_check = current_time - self.last_check_time >= 0.1
         if run_check:
             self.last_check_time = current_time
             boxes = self.detect_faces_dnn(rgb_frame)
